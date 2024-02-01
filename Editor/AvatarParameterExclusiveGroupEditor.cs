@@ -8,12 +8,14 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
     [CustomEditor(typeof(AvatarParameterExclusiveGroup))]
     public class AvatarParameterExclusiveGroupEditor : Editor
     {
+        SerializedProperty LocalOnlyProperty;
         SerializedProperty ExclusiveParametersProperty;
         ReorderableList ExclusiveParametersList;
 
         void OnEnable()
         {
             ParameterUtil.Get(serializedObject, true);
+            LocalOnlyProperty = serializedObject.FindProperty(nameof(AvatarParameterExclusiveGroup.LocalOnly));
             ExclusiveParametersProperty = serializedObject.FindProperty(nameof(AvatarParameterExclusiveGroup.ExclusiveParameters));
             ExclusiveParametersList = new ReorderableList(serializedObject, ExclusiveParametersProperty)
             {
@@ -53,6 +55,7 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+            EditorGUILayout.PropertyField(LocalOnlyProperty);
             ExclusiveParametersList.DoLayoutList();
             serializedObject.ApplyModifiedProperties();
         }
