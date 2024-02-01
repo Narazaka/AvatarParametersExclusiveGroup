@@ -91,6 +91,11 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
                 mergeAnimator.animator = animator;
                 mergeAnimator.layerType = VRCAvatarDescriptor.AnimLayerType.FX;
                 mergeAnimator.matchAvatarWriteDefaults = true;
+
+                foreach (var group in groups)
+                {
+                    Object.DestroyImmediate(group);
+                }
             });
         }
 
