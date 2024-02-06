@@ -16,6 +16,8 @@
 
 ## 更新履歴
 
+- 0.2.0
+  - AvatarParameterDriver 2.x系に対応
 - 0.1.0
   - リリース
 
