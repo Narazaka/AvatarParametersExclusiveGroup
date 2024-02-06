@@ -7,6 +7,7 @@ using nadena.dev.ndmf;
 using UnityEditor.Animations;
 using VRC.SDK3.Avatars.Components;
 using net.narazaka.vrchat.avatar_parameters_driver.editor;
+using Narazaka.VRChat.AvatarParametersUtil;
 
 [assembly: ExportsPlugin(typeof(net.narazaka.vrchat.avatar_parameters_exclusive_group.editor.AvatarParametersExclusiveGroupPlugin))]
 
@@ -24,7 +25,7 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
             {
                 var groups = ctx.AvatarRootObject.GetComponentsInChildren<AvatarParameterExclusiveGroup>();
                 if (groups.Length == 0) return;
-                var parameters = Util.GetParameters(ctx.AvatarDescriptor, true);
+                var parameters = AvatarParametersUtil.GetParameters(ctx.AvatarDescriptor, true);
                 var parameterByName = parameters.ToDictionary(p => p.name);
 
                 var parameterNames = groups.SelectMany(d => d.ExclusiveParameters).Select(d => d.Parameter.Parameter).Distinct();
@@ -39,7 +40,7 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
                 {
                     if (parameterByName.TryGetValue(parameterName, out var parameter))
                     {
-                        animator.AddParameter(parameter.ToAnimatorControllerParameter());
+                        animator.AddParameter(AvatarParametersUtil.ToAnimatorControllerParameter(parameter));
                     }
                 }
 

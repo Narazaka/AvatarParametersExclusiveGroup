@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEditorInternal;
 using net.narazaka.vrchat.avatar_parameters_driver;
-using net.narazaka.vrchat.avatar_parameters_driver.editor;
+using Narazaka.VRChat.AvatarParametersUtil.Editor;
 
 namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
 {
@@ -14,7 +14,7 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
 
         void OnEnable()
         {
-            ParameterUtil.Get(serializedObject, true);
+            AvatarParametersUtilEditor.Get(serializedObject, true);
             LocalOnlyProperty = serializedObject.FindProperty(nameof(AvatarParameterExclusiveGroup.LocalOnly));
             ExclusiveParametersProperty = serializedObject.FindProperty(nameof(AvatarParameterExclusiveGroup.ExclusiveParameters));
             ExclusiveParametersList = new ReorderableList(serializedObject, ExclusiveParametersProperty)
