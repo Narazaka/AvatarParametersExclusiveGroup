@@ -25,7 +25,7 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
             {
                 var groups = ctx.AvatarRootObject.GetComponentsInChildren<AvatarParameterExclusiveGroup>();
                 if (groups.Length == 0) return;
-                var parameters = ParameterInfo.ForContext(ctx).GetParametersForObject(ctx.AvatarRootObject).SelectMany(p => p.SubParameters());
+                var parameters = ParameterInfo.ForContext(ctx).GetParametersForObject(ctx.AvatarRootObject).ToDistinctSubParameters();
                 var parameterByName = parameters.ToDictionary(p => p.EffectiveName);
 
                 var parameterNames = groups.SelectMany(d => d.ExclusiveParameters).Select(d => d.Parameter.Parameter).Distinct();
