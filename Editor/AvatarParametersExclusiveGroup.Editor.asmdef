@@ -1,5 +1,6 @@
 {
     "name": "AvatarParametersExclusiveGroup.Editor",
+    "rootNamespace": "",
     "references": [
         "AvatarParametersExclusiveGroup.Runtime",
         "AvatarParametersDriver.Runtime",
@@ -9,7 +10,8 @@
         "VRC.SDKBase",
         "VRC.SDK3A",
         "Narazaka.VRChat.AvatarParametersUtil",
-        "Narazaka.VRChat.AvatarParametersUtil.Editor"
+        "Narazaka.VRChat.AvatarParametersUtil.Editor",
+        "nadena.dev.ndmf.vrchat"
     ],
     "includePlatforms": [
         "Editor"
