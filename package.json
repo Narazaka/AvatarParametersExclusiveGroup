@@ -1,6 +1,6 @@
 {
   "name": "net.narazaka.vrchat.avatar-parameters-exclusive-group",
-  "version": "0.3.0-rc.1",
+  "version": "0.3.0",
   "displayName": "Avatar Parameters Exclusive Group",
   "description": "Convenient Exclusive VRC Parameter Driver",
   "author": {
