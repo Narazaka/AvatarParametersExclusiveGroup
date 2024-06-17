@@ -77,7 +77,8 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
                         toIdle.exitTime = 0f;
                         foreach (var other in group.ExclusiveParameters.Where(p => p != exclusiveParameter))
                         {
-                            toIdle.AddCondition(((AnimatorConditionMode)other.Parameter.Mode).Reverse(), other.Parameter.Threshold, other.Parameter.Parameter);
+                            var reversedOtherParameter = other.Parameter.Reverse(parameterByName.TryGetValue(other.Parameter.Parameter, out var pp) ? pp.ParameterType : null);
+                            toIdle.AddCondition((AnimatorConditionMode)reversedOtherParameter.Mode, reversedOtherParameter.Threshold, reversedOtherParameter.Parameter);
                             var toActive = idleState.AddTransition(activeState);
                             toActive.hasExitTime = false;
                             toActive.hasFixedDuration = true;
