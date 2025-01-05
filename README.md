@@ -21,6 +21,8 @@ https://github.com/Narazaka/AvatarParametersExclusiveGroup/releases/latest か�
 
 ## 更新履歴
 
+- 0.4.1
+  - 更新履歴等のURLをマニフェストに追加
 - 0.4.0
   - Greater / Less のラベルが`>=`等になっていたのを意味的に正しい`>`に修正
   - IntパラメーターについてGreater / Lessを設定したときに正しく戻るように修正
