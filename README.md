@@ -21,6 +21,8 @@ https://github.com/Narazaka/AvatarParametersExclusiveGroup/releases/latest か�
 
 ## 更新履歴
 
+- 0.4.2
+  - インストーラーを修正
 - 0.4.1
   - 更新履歴等のURLをマニフェストに追加
 - 0.4.0
