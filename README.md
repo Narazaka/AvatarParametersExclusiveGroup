@@ -21,6 +21,9 @@ https://github.com/Narazaka/AvatarParametersExclusiveGroup/releases/latest か�
 
 ## 更新履歴
 
+- 0.5.0
+  - 日本語化
+  - UIに簡易的な説明を追加
 - 0.4.2
   - インストーラーを修正
 - 0.4.1
