@@ -21,6 +21,8 @@ https://github.com/Narazaka/AvatarParametersExclusiveGroup/releases/latest か�
 
 ## 更新履歴
 
+- 0.6.0
+  - アイコンが付きました <img src="Icons/AvatarParameterExclusiveGroup.png" width="18" height="18">
 - 0.5.0
   - 日本語化
   - UIに簡易的な説明を追加
