@@ -81,7 +81,7 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
                 );
             public static istring LocalOnly = new istring("Local Only", "ローカルのみ");
             public static istring ExclusiveParameters = new istring("Conflicting Parameter Sets", "競合するパラメータのセット");
-            public static istring Parameter = new istring("Parameter", "パラメータ");
+            public static istring Parameter = new istring("Parameter", "パラメーター");
             public static istring FallbackValue = new istring("Fallback Value On Conflict", "競合時にフォールバックする値");
         }
     }
