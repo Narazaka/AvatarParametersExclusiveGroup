@@ -21,6 +21,8 @@ https://github.com/Narazaka/AvatarParametersExclusiveGroup/releases/latest か�
 
 ## 更新履歴
 
+- 0.7.0-beta.0
+  - GameObject階層ごとのパラメーター（リネーム）に対応
 - 0.6.1
   - シーン上の邪魔なアイコンがデフォルトで無効になるように
 - 0.6.0
