@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEditorInternal;
+using UnityEngine;
 using net.narazaka.vrchat.avatar_parameters_driver;
 using Narazaka.VRChat.AvatarParametersUtil.Editor;
 
@@ -10,15 +11,24 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
     {
         SerializedProperty LocalOnlyProperty;
         SerializedProperty ExclusiveParametersProperty;
+        SerializedProperty PreserveHierarchyProperty;
         ReorderableList ExclusiveParametersList;
 
         bool ShowDetail = false;
 
+        AvatarParametersUtilEditor ParameterUtil =>
+            PreserveHierarchyProperty != null && PreserveHierarchyProperty.boolValue
+                ? AvatarParametersUtilEditor.GetForHierarchy(serializedObject)
+                : AvatarParametersUtilEditor.GetForAvatarRoot(serializedObject);
+
         void OnEnable()
         {
-            AvatarParametersUtilEditor.Get(serializedObject, true);
             LocalOnlyProperty = serializedObject.FindProperty(nameof(AvatarParameterExclusiveGroup.LocalOnly));
             ExclusiveParametersProperty = serializedObject.FindProperty(nameof(AvatarParameterExclusiveGroup.ExclusiveParameters));
+            PreserveHierarchyProperty = serializedObject.FindProperty(nameof(AvatarParameterExclusiveGroup.PreserveHierarchy));
+            // 両モードのキャッシュを最新化（PreserveHierarchy toggle 時にも有効）
+            AvatarParametersUtilEditor.GetForAvatarRoot(serializedObject, forceUpdate: true);
+            AvatarParametersUtilEditor.GetForHierarchy(serializedObject, forceUpdate: true);
             ExclusiveParametersList = new ReorderableList(serializedObject, ExclusiveParametersProperty)
             {
                 drawHeaderCallback = (rect) =>
@@ -65,6 +75,13 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
             }
             EditorGUILayout.PropertyField(LocalOnlyProperty, T.LocalOnly.GUIContent);
             ExclusiveParametersList.DoLayoutList();
+
+            var rect = EditorGUILayout.GetControlRect();
+            var label = new GUIContent(T.PreserveHierarchy, T.PreserveHierarchyDescription);
+            EditorGUI.BeginProperty(rect, label, PreserveHierarchyProperty);
+            PreserveHierarchyProperty.boolValue = !EditorGUI.Toggle(rect, label, !PreserveHierarchyProperty.boolValue);
+            EditorGUI.EndProperty();
+
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -83,6 +100,11 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
             public static istring ExclusiveParameters = new istring("Conflicting Parameter Sets", "競合するパラメータのセット");
             public static istring Parameter = new istring("Parameter", "パラメーター");
             public static istring FallbackValue = new istring("Fallback Value On Conflict", "競合時にフォールバックする値");
+            public static istring PreserveHierarchy = new istring("Ignore Hierarchy", "階層を無視");
+            public static istring PreserveHierarchyDescription = new istring(
+                "Old Behavior. Even when you are in the renamed hierarchy of MA Parameters, use the name outside.",
+                "古い挙動です。MA Parametersの名前変更された階層内にいるときも外の名前を使います。"
+                );
         }
     }
 }

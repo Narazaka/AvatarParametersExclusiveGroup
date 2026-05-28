@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using VRC.SDKBase;
 
 namespace net.narazaka.vrchat.avatar_parameters_exclusive_group
@@ -9,5 +9,12 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group
         public bool LocalOnly;
         [SerializeField]
         public ExclusiveParameter[] ExclusiveParameters;
+        [SerializeField]
+        public bool PreserveHierarchy;
+
+        void Reset()
+        {
+            PreserveHierarchy = true;
+        }
     }
 }
