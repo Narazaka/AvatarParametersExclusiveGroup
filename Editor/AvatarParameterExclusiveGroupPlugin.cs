@@ -4,6 +4,7 @@ using UnityEngine;
 using VRC.SDKBase;
 using nadena.dev.modular_avatar.core;
 using nadena.dev.ndmf;
+using nadena.dev.ndmf.localization;
 using UnityEditor.Animations;
 using VRC.SDK3.Avatars.Components;
 using net.narazaka.vrchat.avatar_parameters_driver.editor;
@@ -54,7 +55,18 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
             var invalidParameters = parameterNames.Where(p => !parameterByName.ContainsKey(p)).ToArray();
             if (invalidParameters.Length > 0)
             {
-                throw new System.InvalidOperationException($"Parameters {string.Join(", ", invalidParameters)} not found");
+                var invalidParameterSet = new HashSet<string>(invalidParameters);
+                // 複数コンポーネントがマージされている場合があるため、どのコンポーネントが無効なパラメーターを参照しているか個別に報告する
+                foreach (var group in groups)
+                {
+                    var missingInGroup = group.ExclusiveParameters.Select(p => p.Parameter.Parameter).Where(invalidParameterSet.Contains).Distinct().ToArray();
+                    if (missingInGroup.Length == 0) continue;
+                    using (ErrorReport.WithContextObject(group.gameObject))
+                    {
+                        ErrorReport.ReportError(new ParametersNotFoundError(missingInGroup));
+                    }
+                }
+                return;
             }
             var clip = MakeEmptyAnimationClip();
             var animator = new AnimatorController();
@@ -66,12 +78,11 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
                 }
             }
 
-            var layerIndex = 0;
             foreach (var group in groups)
             {
                 foreach (var exclusiveParameter in group.ExclusiveParameters)
                 {
-                    var layer = animator.AddLastLayer($"Avatar Parameters Driver {layerIndex}");
+                    var layer = animator.AddLastLayer($"Avatar Parameters Exclusive Group [{group.gameObject.name}]");
                     var idleState = layer.stateMachine.AddConfiguredState("idle", clip);
                     layer.stateMachine.defaultState = idleState;
                     var activeState = layer.stateMachine.AddConfiguredState("active", clip);
@@ -107,7 +118,6 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
                         toActive.exitTime = 0f;
                         toActive.AddCondition((AnimatorConditionMode)other.Parameter.Mode, other.Parameter.Threshold, other.Parameter.Parameter);
                     }
-                    layerIndex++;
                 }
             }
             var mergeAnimator = obj.AddComponent<ModularAvatarMergeAnimator>();
@@ -126,6 +136,35 @@ namespace net.narazaka.vrchat.avatar_parameters_exclusive_group.editor
             var clip = new AnimationClip();
             clip.SetCurve("__AvatarParameterExclusiveGroup_EMPTY__", typeof(GameObject), "localPosition.x", new AnimationCurve { keys = new Keyframe[] { new Keyframe { time = 0, value = 0 }, new Keyframe { time = 1f / 60f, value = 0 } } });
             return clip;
+        }
+
+        static readonly istring Title = new istring("Parameters not found", "パラメーターが見付かりませんでした");
+
+        // NDMF標準の SimpleError を使うと、Error Report ウィンドウで他のエラーと同じ
+        // アイコン + タイトル + 内容のレイアウトになる。ローカライズ機構は使わないので、
+        // キーを素通しして常に渡された文字列（istring が現在の言語で解決した文字列）を
+        // そのまま表示する Localizer を充てる
+        static readonly Localizer PassthroughLocalizer = new Localizer("en-US", () => new List<(string, System.Func<string, string>)>
+        {
+            ("en-US", key => "{0}"),
+        });
+
+        class ParametersNotFoundError : SimpleError
+        {
+            readonly string detail;
+
+            public ParametersNotFoundError(string[] parameters)
+            {
+                detail = string.Join(", ", parameters);
+            }
+
+            public override Localizer Localizer => PassthroughLocalizer;
+            public override string TitleKey => Title;
+            public override string[] TitleSubst => new string[] { Title };
+            public override string DetailsKey => detail;
+            public override string[] DetailsSubst => new[] { detail };
+            public override string FormatHint() => null;
+            public override ErrorSeverity Severity => ErrorSeverity.Error;
         }
     }
 }
