@@ -21,6 +21,11 @@ https://github.com/Narazaka/AvatarParametersExclusiveGroup/releases/latest か�
 
 ## 更新履歴
 
+- 0.7.0
+  - GameObject階層ごとのパラメーター（リネーム）に対応
+  - パラメーター名が無いときのエラーを分かりやすく
+  - レイヤー名にGameObject名を追加
+  - レイヤー名がDriverとなっていた問題を修正
 - 0.7.0-beta.1
   - 依存更新
 - 0.7.0-beta.0
